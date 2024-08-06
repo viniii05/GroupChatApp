@@ -1,28 +1,19 @@
 const express = require('express');
 const path = require('path');
-
 const router = express.Router();
+const rootDir = require('../util/path');
 
-router.get('/login', (req, res, next) => {
-    res.send(`
-        <html>
-            <body>
-                <form onsubmit="saveUsername(event)">
-                    <input id="usernameInput" type="text" placeholder="Enter your username" required>
-                    <button type="submit">Login</button>
-                </form>
-                <script>
-                    // Save username to local storage and redirect to the home page
-                    function saveUsername(event) {
-                        event.preventDefault();
-                        const username = document.getElementById('usernameInput').value;
-                        localStorage.setItem('username', username);
-                        window.location.href = '/';
-                    }
-                </script>
-            </body>
-        </html>
-    `);
+// Serve login.html for the /login route
+router.get('/', (req, res) => {
+    res.sendFile(path.join(rootDir, 'views', 'login.html'));
+});
+
+// Handle form submission (POST request to /login)
+router.post('/', (req, res) => {
+    const username = req.body.title;
+    // Process the login here, for example:
+    console.log(`Username submitted: ${username}`);
+    res.redirect('/');  // Redirect to home or another route after login
 });
 
 module.exports = router;
